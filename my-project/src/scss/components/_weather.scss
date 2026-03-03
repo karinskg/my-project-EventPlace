@@ -24,14 +24,14 @@
   }
 
   &__city {
-    font-size: 2rem;
+    
     font-weight: 500;
     color: #fff;
     margin: 0;
   }
 
   &__date {
-    font-size: 0.9rem;
+   
     opacity: 0.8;
     color: #fff;
   }
@@ -43,24 +43,26 @@
     margin-top: 1rem;
 
     img {
-      width: 40px;
+      width: 5rem;
       border-radius: 0;
     }
     span {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       font-weight: 600;
     }
   }
 
   &__temp-block {
     text-align: right;
+   
     .weather-widget__current-temp {
-      font-size: 5rem;
+      font-size: 7rem;
       font-weight: 300;
       line-height: 1;
     }
     .weather-widget__range {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
+      margin-top: 1rem;
       .high {
         color: #fff;
       }
@@ -80,7 +82,7 @@
     a {
       text-decoration: none;
       color: rgba(255, 255, 255, 0.874);
-      font-size: 0.9rem;
+      font-size: 1.4rem;
       position: relative;
 
       &.active {
@@ -110,14 +112,14 @@
       gap: 8px;
 
       &__time {
-        font-size: 0.8rem;
+        // font-size: 0.8rem;
         font-weight: 700;
       }
       &__icon {
         width: 30px;
       }
       &__temp {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
       }
     }
   }

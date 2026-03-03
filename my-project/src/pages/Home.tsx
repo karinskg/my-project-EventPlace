@@ -2,6 +2,8 @@ import React from 'react';
 import EventTitle from '../components/EventTitle';
 import EventCard from '../components/EventCard';
 import Card from '../components/Card';
+import CartLoader from '../components/CartLoader';
+import CartLoaderRec from '../components/CartLoaderRec';
 
 const Home = () => {
   return (
@@ -10,6 +12,7 @@ const Home = () => {
 
       <section className="comEvSec">
         <EventCard />
+        <CartLoader/>
       </section>
 
       <div className="category-filters">
@@ -66,6 +69,7 @@ const Home = () => {
       <section className="recomend">
         <div className="card__el">
           <Card />
+          <CartLoaderRec/>
         </div>
       </section>
     </>
