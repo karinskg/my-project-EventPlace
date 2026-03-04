@@ -370,15 +370,15 @@ $bg-light: #f8f9fb;
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    // transition: all 0.3s ease;
     height: 46px; // Чтобы совпадала с высотой инпутов
     display: flex;
     align-items: center;
     justify-content: center;
 
-    span {
-      color: #fff;
-    }
+    // span {
+    //   color: #fff;
+    // }
 
     &:hover {
       transform: translateY(-2px);
@@ -386,9 +386,9 @@ $bg-light: #f8f9fb;
       box-shadow: 0 5px 15px rgba($iris, 0.3);
     }
 
-    &:active {
-      transform: translateY(0);
-    }
+    // &:active {
+    //   transform: translateY(0);
+    // }
   }
 }
 

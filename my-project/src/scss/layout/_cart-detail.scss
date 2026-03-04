@@ -60,11 +60,13 @@
   }
 }
 
-
-
 .main-header {
   background: #fff;
-  margin-bottom: 1rem;
+  box-shadow: 0px 7px 17px 3px rgb(0 0 0 / 19%);
+  padding: 1rem 2.5rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  z-index: 10;
 }
 
 .container_info {

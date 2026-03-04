@@ -1,13 +1,11 @@
 import React from 'react';
 import Weather from '../components/Weather';
+import CartDetailLoader from '../components/CartDetailLoader';
 
 const CardDetails = () => {
   return (
     <main className="travel-detail wrapper">
-      <header className="main-header">
-        <h1 className="title">Trip Details</h1>
-        <p className="description">View and edit AI-generated travel plans</p>
-      </header>
+      
 
       <section className="container_info">
         <header className="trip-info">
@@ -70,6 +68,7 @@ const CardDetails = () => {
         </div>
       </section>
     </main>
+    // <CartDetailLoader/>
   );
 };
 

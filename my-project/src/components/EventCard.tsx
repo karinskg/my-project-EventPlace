@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const EventCard = () => {
+  const navigation = useNavigate()
   return (
-    <div className="event-card">
+    <div className="event-card" onClick={()=> navigation('/cart-detail')}>
       <div className="event-card__image-wrapper">
         <img
           src="./image//tim-schmidbauer-1tsJ1QP20W4-unsplash.jpg"

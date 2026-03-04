@@ -1,9 +1,14 @@
 import React from 'react';
 
-const NoteSection = () => {
+type pr={
+  isVisible: ()=> void;
+}
+
+const NoteSection = ({isVisible}:pr) => {
+ 
   return (
     <section className="note-section">
-      <form className="note-form">
+      <div className="note-form" >
         <div className="note-header">
           <h3>Quick Event Note</h3>
           <p>Schedule a quick task or reminder</p>
@@ -25,11 +30,11 @@ const NoteSection = () => {
             <input type="text" placeholder="What needs to be done?" className="note-text" />
           </div>
 
-          <button type="submit" className="add-note-btn">
-            <span>Save Note</span>
+          <button className="add-note-btn" onClick={() => isVisible() }>
+            Save Note
           </button>
         </div>
-      </form>
+      </div>
     </section>
   );
 };
