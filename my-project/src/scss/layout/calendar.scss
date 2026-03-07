@@ -31,7 +31,7 @@
 .calendar-weekdays {
   display: grid;
   background: aliceblue;
-  grid-template-columns: repeat(7, 1fr); 
+  grid-template-columns: repeat(7, 1fr);
   text-align: center;
   padding-bottom: 15px;
   border-bottom: 1px solid $border-color;
@@ -233,7 +233,7 @@ $text-sub: #71717a;
     cursor: pointer;
 
     &:hover {
-      background: #e9bb02bc;
+      background: #d0c71fec;
       z-index: 10;
     }
   }
@@ -248,10 +248,6 @@ $text-sub: #71717a;
   &.yellow {
     background: rgba($color-yellow, 0.5);
     border-left-color: #facc15;
-
-    &.active {
-      box-shadow: 1px 0px 8px 2px #facc15;
-    }
   }
   &.blue {
     background: rgba($color-blue, 0.5);
@@ -260,6 +256,10 @@ $text-sub: #71717a;
   &.red {
     background: rgba($color-red, 0.5);
     border-left-color: #ef4444;
+  }
+
+  &.active {
+    box-shadow: 0px 0px 12px 5px rgba(0, 0, 0, 0.3411764706);
   }
 
   .expand-content {
@@ -291,6 +291,44 @@ $text-sub: #71717a;
       opacity: 1;
     }
   }
+}
+
+.input-container.visible {
+  max-height: 50px; /* Высота инпута */
+  opacity: 1;
+  margin-top: 1.5rem;
+}
+
+/* Сам инпут */
+.modern-input {
+  width: 50%;
+  padding: 10px 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.2); /* Полупрозрачная граница */
+  border-radius: 10px;
+  background: rgba(11, 6, 6, 0.15); /* Эффект стекла */
+  color: rgb(41, 34, 34);
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.modern-input::placeholder {
+  color: rgb(255, 255, 255);
+}
+
+.modern-input:focus {
+  border-color: white;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  background: rgba(11, 6, 6, 0.15);
+}
+
+/* Кнопка "Save" (пример выделения цветом) */
+.upcoming-card__btn.save {
+  background-color: #ffffff;
+  color: #000;
+  font-weight: 600;
 }
 
 $iris: #5669ff;
@@ -381,7 +419,12 @@ $bg-light: #f8f9fb;
       color: #fff;
     }
 
-    &:hover {
+    &:disabled {
+      background: #9c9c9ca7;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
       transform: translateY(-2px);
       background: #000;
       box-shadow: 0 5px 15px rgba($iris, 0.3);

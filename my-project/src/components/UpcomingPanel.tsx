@@ -1,33 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import UpcomingCard from './UpcomingCard';
 
-const UpcomingPanel = () => {
+type SingleEvent = {
+  id: number;
+  date: string;
+  title: string;
+  time: string;
+  other: string;
+};
+
+interface UpcomingPanelProps {
+  event: SingleEvent[];
+  setEvent: React.Dispatch<React.SetStateAction<SingleEvent[]>>;
+}
+
+const UpcomingPanel = ({ event, setEvent }: UpcomingPanelProps) => {
+  const [activeId, setActiveId] = useState<number | null>(null);
+  function updateTitle(id: number, newTitle: string) {
+    setEvent((prev) => prev.map((el) => (el.id === id ? { ...el, other: newTitle } : el)));
+  }
+
   return (
     <aside className="upcoming-panel">
       <h2 className="upcoming-panel__title">Upcoming</h2>
 
       <div className="upcoming-section">
         <h3 className="upcoming-section__date">Today</h3>
-      {/* blue,yellow,red */}
-       <UpcomingCard/>
-
-        <div className="upcoming-card blue">
-          <div className="upcoming-card__header">
-            <img src="nike.png" alt="Nike" className="brand-icon" />
-            <span className="date">Nov 01, 2022</span>
-          </div>
-          <h4 className="upcoming-card__title">Draft submission</h4>
-          <p className="upcoming-card__time">02:00pm - 03:30pm</p>
-        </div>
+        {/* blue,yellow,red */}
+        {event.map((el) => (
+          <UpcomingCard
+            key={el.id}
+            list={el}
+            updateTitle={updateTitle}
+            isActive={activeId === el.id}
+            onToggle={() => setActiveId(activeId === el.id ? null : el.id)}
+          />
+        ))}
       </div>
 
       <div className="upcoming-section">
         <h3 className="upcoming-section__date">Tomorrow</h3>
-        <div className="upcoming-card red">
-          <h4 className="upcoming-card__title">Make Content Live</h4>
-          <p className="upcoming-card__time">10:00pm - 11:00pm</p>
-        </div>
-        <UpcomingCard/>
       </div>
     </aside>
   );

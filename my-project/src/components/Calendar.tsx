@@ -70,7 +70,7 @@ const Calendar = () => {
     }
   }
 
-  console.log(fullCalendar);
+ 
 
   useEffect(() => {
     generateCalendar();
