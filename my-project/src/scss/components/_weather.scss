@@ -24,14 +24,12 @@
   }
 
   &__city {
-    
     font-weight: 500;
     color: #fff;
     margin: 0;
   }
 
   &__date {
-   
     opacity: 0.8;
     color: #fff;
   }
@@ -54,7 +52,7 @@
 
   &__temp-block {
     text-align: right;
-   
+
     .weather-widget__current-temp {
       font-size: 7rem;
       font-weight: 300;
@@ -103,23 +101,64 @@
 
   &__hourly {
     display: flex;
+    overflow-x: auto;
     justify-content: space-between;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding: 1.5rem 0.5rem;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.296);
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.318);
+      border-radius: 10px;
+      transition: background 0.3s;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
 
     .forecast-item {
       display: flex;
       flex-direction: column;
+      flex: 0 0 5.5rem;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.37);
+      border-radius: 5px;
+      padding: 1rem 0.5rem;
+
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px; /* Более мягкие углы */
+      scroll-snap-align: center;
+      transition:
+        transform 0.2s,
+        background 0.2s;
 
       &__time {
-        // font-size: 0.8rem;
+        font-size: 1.2rem;
         font-weight: 700;
       }
       &__icon {
-        width: 30px;
+        width: 40px;
+        height: 40px;
+        filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
       }
       &__temp {
-        font-size: 1.3rem;
+        font-weight: 700;
       }
     }
   }

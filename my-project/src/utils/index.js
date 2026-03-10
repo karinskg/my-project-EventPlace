@@ -1,7 +1,7 @@
 import dayjs from "dayjs"
 
 export function formateDate(date){
-    return dayjs(date).format('MMM D, YYYY')
+    return dayjs(date).format('MMMM D, YYYY')
 }
 
 export function formateTime(time){

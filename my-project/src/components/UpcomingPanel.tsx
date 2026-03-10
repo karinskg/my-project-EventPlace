@@ -20,6 +20,8 @@ const UpcomingPanel = () => {
   //   };
   // }, []); 
 
+  
+
   const isToday = useMemo(()=>{
     return event.filter((el)=> dayjs(el.date).isSame(dayjs(),'day'))
   },[event])
