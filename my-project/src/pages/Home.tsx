@@ -1,13 +1,37 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EventTitle from '../components/EventTitle';
 import EventCard from '../components/EventCard';
 import Card from '../components/Card';
 import CartLoader from '../components/CartLoader';
 import CartLoaderRec from '../components/CartLoaderRec';
+import dayjs from 'dayjs';
 
 const Home = () => {
-  const [activeBut,setActiveBut] = useState('All')
+  const [activeBut, setActiveBut] = useState('All');
   const category = ['All', 'Music', 'Food', 'Art', 'Tech'];
+  const [comingEventsApi, setComingEventsApi] = useState();
+
+  useEffect(() => {
+    const ComSonStart = `${dayjs().format('YYYY-MM-DD')}T00:00:00Z`;
+    const ComSonEnd = `${dayjs().add(10, 'day').format('YYYY-MM-DD')}T00:00:00Z`;
+    async function add() {
+      // const res = await fetch('https://app.ticketmaster.com/discovery/v2/events.json?startDateTime=2026-03-15T00:00:00Z&endDateTime=2026-03-20T00:00:00Z&apikey=BpvqSH8A8zdDv1ji3n1Hs5sQiPpDt77w')
+      //https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&apikey=BpvqSH8A8zdDv1ji3n1Hs5sQiPpDt77w
+      //https://app.ticketmaster.com/discovery/v2/events.json?startDateTime=2026-03-15T00:00:00Z&endDateTime=2026-03-20T00:00:00Z&apikey=BpvqSH8A8zdDv1ji3n1Hs5sQiPpDt77w
+
+      const commingSoonApi = await fetch(
+        `https://app.ticketmaster.com/discovery/v2/events.json?startDateTime=${ComSonStart}&endDateTime=${ComSonEnd}&apikey=BpvqSH8A8zdDv1ji3n1Hs5sQiPpDt77w`,
+      );
+
+      const date = await commingSoonApi.json();
+      setComingEventsApi(date._embedded.events);
+      // console.log(date);
+    }
+    add();
+  }, []);
+
+  console.log(comingEventsApi)
+
   return (
     <>
       <EventTitle />
@@ -62,7 +86,10 @@ const Home = () => {
 
       <div className="category-filters">
         {category.map((el, id) => (
-          <button key={id} className={`filter-btn ${activeBut === category[id] ? 'active' : ''}` } onClick={()=> setActiveBut(el)}>
+          <button
+            key={id}
+            className={`filter-btn ${activeBut === category[id] ? 'active' : ''}`}
+            onClick={() => setActiveBut(el)}>
             {el}
           </button>
         ))}

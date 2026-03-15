@@ -1,49 +1,22 @@
-import { Fragment, useEffect, useState, useMemo } from 'react';
+import { Fragment, useEffect } from 'react';
 import { formateDate } from '../utils';
-import dayjs from 'dayjs';
-import type { WeatherHours } from '../types';
 
 import { FetchWeather } from '../redux/feature/weatherSlice';
 import { useAppDispatch, type RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
 
 const Weather = () => {
-  
-  const today = dayjs();
+  const { weather, weatherHour, error,isLoading } = useSelector((state: RootState) => state.weather);
 
-  const [weatherHour, setWeatherHour] = useState<WeatherHours[] | null>([]);
-
-  const weather = useSelector((state:RootState)=> state.weather.weather)
-  
-
-  const dispatch = useAppDispatch()
-
-  const [currentDateApi] = useState(() =>{
-    if(weather === null){return}
-    return dayjs(weather.location.localtime.split(' ')[0]).isSame(today, 'day')}
-  );
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(FetchWeather())
-
-    if (!weather?.forecast?.forecastday?.[0]?.hour) return;
-
-    // const hours = weather.forecast.forecastday[0].hour;
-
-    // setWeatherHour(hours);
-
-    // if (currentDateApi) {
-    //   const NumberToday = Number(today.format('H'));
-    //   const arr = hours.filter((hour) => {
-    //     return parseInt(hour.time.split(' ')[1].split(':')[0], 10) >= NumberToday;
-    //   });
-    //   setWeatherHour(arr);
-    // }
+    dispatch(FetchWeather('London'));
   }, []);
 
-  console.log(weatherHour)
-
-  if(weather === null){return <p>техническая ошибка</p> }
+  if (isLoading) return <p>Загрузка...</p>;
+  if (error) return <p style={{color:'red'}}>Ошибка: {error}</p>;
+  if (!weather) return <p>Нет данных</p>;
 
   return (
     <section className="weather-widget">
@@ -85,7 +58,7 @@ const Weather = () => {
 
       <div className="weather-widget__hourly">
         {weather.forecast.forecastday.length !== 0 &&
-          weatherHour !== null &&
+          weatherHour !== undefined &&
           weatherHour.map((el) => (
             <Fragment key={el.time_epoch}>
               <div className="forecast-item ">
