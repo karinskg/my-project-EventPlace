@@ -9,7 +9,7 @@ import { useAppDispatch } from '../redux/store';
 const MainLayout = () => {
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
-  const scroll = pathname === '/see-all';
+  const scroll = pathname === '/see-all' || pathname ==='/events';
 
   useEffect(() => {
    

@@ -5,6 +5,9 @@
   display: inline-block;
   width: auto;
   cursor: pointer;
+  @media (max-width: 457px) {
+    width: 100%;
+  }
 
   .filter-visual-btn {
     display: flex;
@@ -81,9 +84,10 @@
 
 .category-filters {
   display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-  padding: 4px;
+  align-items: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   &::-webkit-scrollbar {
@@ -91,6 +95,10 @@
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
+
+  @media (max-width: 457px) {
+    flex-direction: column;
+  }
 }
 
 .filter-btn {
@@ -102,6 +110,20 @@
   font-size: 1.4rem;
   font-weight: 500;
   cursor: pointer;
+  @media (max-width: 457px) {
+    width: 100%;
+  }
+
+  &:disabled {
+    background: #9c9c9ca7;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    background-color: lighten($color-iris, 20%);
+    color: #fff;
+    transform: translateY(-2px);
+  }
 
   // Тонкая тень вместо границы
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
@@ -109,17 +131,86 @@
   // Плавная анимация
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-  &:hover {
-    background-color: lighten($color-iris, 20%);
-    color: #fff;
-    transform: translateY(-2px);
-  }
+ 
 
   // Состояние "Активна"
   &.active {
     background-color: $color-iris;
     color: #fff;
-    box-shadow: 0px 0px 5px 1px $color-primary;
+
     font-weight: 600;
   }
+}
+
+.search-input {
+  padding: 10px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.3s ease;
+  min-width: 20rem;
+  font-size: 14px;
+  margin-right: 1rem;
+  @media (max-width: 1040px) {
+    width: 100%;
+  }
+}
+
+.search-input:focus {
+  border-color: #00000c4a;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.date-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  @media (max-width: 490px) {
+    width: 70%;
+  }
+  @media (max-width: 457px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+  @media (max-width: 390px) {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.date-input-wrapper {
+  background: #f9fafb;
+
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 5px 12px;
+  @media (max-width: 490px) {
+    width: 50%;
+  }
+
+  @media (max-width: 390px) {
+    width: 100%;
+  }
+}
+
+.filter-groups {
+  @media (max-width: 457px) {
+    width: 100%;
+  }
+}
+
+.date-input-wrapper label {
+  font-size: 12px;
+  color: #6b7280;
+  margin-right: 8px;
+  font-weight: 600;
+}
+
+.custom-date {
+  border: none;
+  background: transparent;
+  outline: none;
+  color: #374151;
+  font-size: 14px;
+  cursor: pointer;
 }

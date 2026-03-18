@@ -33,7 +33,7 @@ export interface WeatherState {
   error: string;
   page: number;
   inputValRed: string;
-  pathnameR: string;
+
   filtersComingEvent: Event[];
 }
 
@@ -44,7 +44,6 @@ const initialState: WeatherState = {
   isLoading: false,
   favouriteEv: {},
 
-  pathnameR: '/',
   error: '',
   inputValRed: '',
 };
@@ -59,16 +58,16 @@ export const comEventApiSlice = createSlice({
         state.favouriteEv[id] = data; //{'key':{...data}}
       }
     },
-   
+
     filterSeeAll: (state) => {
       const query = state.inputValRed.trim().toLowerCase();
 
       if (!query) {
         state.filtersComingEvent = [];
       } else {
-        state.filtersComingEvent = state.comingEvents.filter((el) =>
-          el.name?.toLowerCase().includes(query),
-        );
+        state.filtersComingEvent = state.comingEvents.filter((el) => {
+          return el.name?.toLowerCase().includes(query);
+        });
       }
     },
 
@@ -94,8 +93,12 @@ export const comEventApiSlice = createSlice({
 
         const existingIds = new Set(state.comingEvents.map((event) => event.id));
 
-        const union = newEvents.filter((newEvent: Event) => !existingIds.has(newEvent.id));
-        state.comingEvents = [...state.comingEvents, ...union];
+        newEvents.forEach((newEvent: Event) => {
+          if (!existingIds.has(newEvent.id)) {
+            state.comingEvents.push(newEvent);
+          }
+        });
+
         state.page += 1;
       })
       .addCase(FetchEvents.rejected, (state, actions) => {

@@ -58,7 +58,7 @@ const SeeAll = () => {
           : !isLoading && <p>Ничего не найдено</p>}
 
         {isLoading &&
-          Array(4)
+          Array(3)
             .fill(null)
             .map((_, i) => <CartLoader key={i} />)}
       </div>

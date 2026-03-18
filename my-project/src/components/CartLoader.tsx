@@ -4,9 +4,9 @@ import ContentLoader from "react-content-loader"
 const CartLoader = () => (
   <ContentLoader 
     speed={2}
-    width='32rem'
+    width='31rem'
     height='31.8rem'
-    viewBox="0 0 320 310"
+    viewBox="0 0 310 310"
     backgroundColor="#dedede"
     foregroundColor="#ecebeb"
   >

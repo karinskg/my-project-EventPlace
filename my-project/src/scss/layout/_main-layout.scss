@@ -32,7 +32,6 @@
   padding: 1.8rem;
   background: $gray-light;
 
-
   &::-webkit-scrollbar {
     display: none;
   }
@@ -40,10 +39,29 @@
   scrollbar-width: none;
 }
 
+.filterAp {
+  display: flex;
+  /* На маленьких экранах элементы встанут в колонку */
+  gap: 20px;
+  padding: 20px;
+  justify-content: space-between;
+  border-radius: 18px;
+  margin: 20px 0;
+  background: rgba(219, 219, 219, 0.53); /* Более чистый вид через rgba */
+
+  @media (max-width: 1160px) {
+    flex-direction: column;
+  }
+}
+
 .event_title {
   display: flex;
+
   justify-content: space-between;
   align-items: center;
+  @media (max-width: 457px) {
+    width: 100%;
+  }
   .title_coming {
     font-weight: 900;
     text-transform: uppercase;

@@ -2,22 +2,20 @@ import { useEffect, useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDebounce } from 'use-debounce';
-import { useAppDispatch, type RootState } from '../redux/store';
+import { useAppDispatch } from '../redux/store';
 import { inputValues } from '../redux/feature/comEventApiSlice';
-import { useSelector } from 'react-redux';
 
 const Header = () => {
   const [inputVal, setInputVal] = useState('');
   const [debouncedValue] = useDebounce(inputVal, 1000);
 
-  const { pathnameR } = useSelector((state: RootState) => state.eventsApi);
-
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  
   useEffect(() => {
-    if (pathname !== pathnameR) {
+    if (pathname !== '/') {
       setTimeout(() => {
         setInputVal('');
         dispatch(inputValues(''));
