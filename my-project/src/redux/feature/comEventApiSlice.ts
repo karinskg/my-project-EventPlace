@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-
-import type { Event } from '../../types';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import type { Event, ICartDetail } from '../../types';
 
 interface FetchEventsArgs {
   start: string;
@@ -75,7 +75,6 @@ export const Fetch = createAsyncThunk(
         arr['other'] = true;
       }
 
-     
       return arr;
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
@@ -83,10 +82,20 @@ export const Fetch = createAsyncThunk(
   },
 );
 
+export const cartDetailApi = createApi({
+  reducerPath: 'cartDetailApi',
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://app.ticketmaster.com/discovery/v2/' }),
+  endpoints: (builder) => ({
+    getCartDetailId: builder.query({
+      query: (id) => `events/${id}.json?apikey=BpvqSH8A8zdDv1ji3n1Hs5sQiPpDt77w`,
+    }),
+  }),
+});
 export interface WeatherState {
   comingEvents: Event[];
   allEvents: Event[];
   favouriteEv: Record<string, Omit<Event, 'id'>>;
+  cartDetail: Partial<ICartDetail> | null;
 
   isLoadingCom: boolean;
   errorCom: string;
@@ -104,6 +113,7 @@ const initialState: WeatherState = {
   comingEvents: [],
   allEvents: [],
   filtersComingEvent: [],
+  cartDetail: {},
   inputValRed: '',
 
   pageCom: 0,
@@ -147,6 +157,9 @@ export const comEventApiSlice = createSlice({
     },
     inputValues: (state, action) => {
       state.inputValRed = action.payload;
+    },
+    removeCartDetail: (state) => {
+      state.cartDetail = {};
     },
   },
   extraReducers: (builder) => {
@@ -200,9 +213,15 @@ export const comEventApiSlice = createSlice({
         state.isLoadingAllEv = false;
         state.errorAllEv = (actions.payload as string) || 'Unknown error';
         console.log('error');
+      })
+      .addMatcher(cartDetailApi.endpoints.getCartDetailId.matchFulfilled, (state, { payload }) => {
+        state.cartDetail = payload;
       });
   },
 });
-export const { addFavourite, removeFavourite, inputValues, filterSeeAll } =
+
+export const { addFavourite, removeFavourite, inputValues, filterSeeAll, removeCartDetail } =
   comEventApiSlice.actions;
+export const { useGetCartDetailIdQuery, useLazyGetCartDetailIdQuery } = cartDetailApi;
+
 export default comEventApiSlice.reducer;

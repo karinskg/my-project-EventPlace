@@ -6,7 +6,7 @@ const EventTitle = () => {
   return (
     <div className="event_title">
       <h1 className="title_coming">Coming soon Events</h1>
-      <button className="filter-btn" onClick={()=> navigate('/see-all')}>See All</button>
+      <button className="filter-btn" style={{width:'auto'}} onClick={()=> navigate('/see-all')}>See All</button>
     </div>
   );
 };

@@ -74,37 +74,33 @@
   background: #f8f9fb;
 }
 
-// Галерея (аналог cn logic в React)
 .gallery {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
   margin: 24px 0;
+  display: flex;
+  justify-content: center;
 
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 150px);
-  }
-
-  .gallery-img {
+  .gallery-img.main {
     width: 100%;
-    border-radius: 12px;
-
-    &.main {
-      height: 330px;
-      @media (min-width: 768px) {
-        grid-column: span 2;
-        grid-row: span 2;
-        height: 100%;
-      }
-    }
-
-    &:not(.main) {
-      height: 150px;
-    }
+    max-width: 800px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   }
 }
 
+.gallery-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-width: 800px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+}
 // Инфо-пилюли
 .info-pills {
   display: flex;
@@ -262,10 +258,18 @@
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 10px 20px rgba($iris, 0.2);
+
   transition: 0.3s;
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba($iris, 0.3);
+
+  &.remove {
+    background: #6a0505f7;
+  }
+  &:disabled {
+    background: #9c9c9ca7;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    transform: translateY(-1px);
   }
 }

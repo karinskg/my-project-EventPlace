@@ -21,6 +21,7 @@
 .container {
   overflow-y: auto; // Только эта часть будет прокручиваться!
   flex-grow: 1;
+  
   &::-webkit-scrollbar {
     width: 8px;
   }
@@ -87,13 +88,17 @@
   border-radius: 18px;
   display: flex;
   overflow-x: auto;
-
+  scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   position: relative;
   gap: 1.6rem;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  *{
+    scroll-snap-align: start;
   }
 
   // -webkit-overflow-scrolling: touch;

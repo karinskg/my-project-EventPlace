@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import EventTitle from '../components/EventTitle';
 import EventCard from '../components/EventCard';
 import CartLoader from '../components/CartLoader';
@@ -25,6 +25,7 @@ const Home = () => {
     useSelector((state: RootState) => state.eventsApi);
 
   const dispatch = useAppDispatch();
+ 
 
   const validation = (e) => {
     const input = e.target.value;
@@ -65,12 +66,23 @@ const Home = () => {
     );
   };
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollTags = (direction: number) => {
+    if (scrollRef.current) {
+     
+      const scrollAmount = scrollRef.current.clientWidth * 0.8;
+
+      scrollRef.current.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   const events = comingEvents?.length !== 0 ? comingEvents : [];
 
   const allevents = allEvents?.length !== 0 ? allEvents : [];
-  
-  if (events.length === 0) return <p>No events found.</p>;
+
 
   return (
     <>
@@ -81,7 +93,7 @@ const Home = () => {
           .fill(null)
           .map((_, id) => <CartLoader key={id} />)
       ) : (
-        <section className="comEvSec">
+        <section className="comEvSec" ref={scrollRef}>
           {events?.map((el) => {
             return <EventCard key={el.id} el={el} />;
           })}
@@ -89,12 +101,12 @@ const Home = () => {
       )}
 
       <div className="category-filters">
-        {/* <button className="filter-btn" onclick="scrollTags(-1)">
+        <button className="filter-btn" onClick={() => scrollTags(-1)}>
           &#10094;
         </button>
-        <button className="filter-btn" onclick="scrollTags(1)">
+        <button className="filter-btn" onClick={() => scrollTags(1)}>
           &#10095;
-        </button> */}
+        </button>
       </div>
       <h1 className="title_coming">Recommendations</h1>
       <div className="filterAp">
@@ -200,7 +212,7 @@ const Home = () => {
 
           {isLoadingAllEv && <p>loading...</p>}
         </div>
-         
+
         {allevents.length > 0 && (
           <div
             style={{
@@ -213,7 +225,6 @@ const Home = () => {
           </div>
         )}
       </section>
-     
     </>
   );
 };

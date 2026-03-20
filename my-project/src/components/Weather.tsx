@@ -1,82 +1,22 @@
-import { Fragment, useEffect } from 'react';
-import { formateDate } from '../utils';
-
-import { FetchWeather } from '../redux/feature/weatherSlice';
-import { useAppDispatch, type RootState } from '../redux/store';
+import { type RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
+import CurrentWeather from './weather/CurrentWeather';
+import FutureWeather from './weather/FutureWeather';
+import type { IFutureWeather, IWeather } from '../types';
 
 const Weather = () => {
-  const { weather, weatherHour, error,isLoading } = useSelector((state: RootState) => state.weather);
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(FetchWeather('London'));
-  }, []);
+  const { weather, weatherHour, isLoading, viewType } = useSelector(
+    (state: RootState) => state.weather,
+  );
 
   if (isLoading) return <p>Загрузка...</p>;
-  if (error) return <p style={{color:'red'}}>Ошибка: {error}</p>;
-  if (!weather) return <p>Нет данных</p>;
 
-  return (
-    <section className="weather-widget">
-      <div className="weather-widget__main">
-        <div className="weather-widget__info">
-          <h2 className="weather-widget__city">{weather.location.name}</h2>
-          <p className="weather-widget__date">{formateDate(weather.location.localtime)}</p>
-          <div className="weather-widget__condition">
-            <img
-              src={weather.current.condition.icon}
-              alt={weather.current.condition.text}
-              className="weather-widget__icon"
-            />
-            <span className="weather-widget__status">{weather.current.condition.text}</span>
-          </div>
-        </div>
+  if (viewType === 'error' && !weather) return <p>Нет данных</p>;
 
-        <div className="weather-widget__temp-block">
-          <span className="weather-widget__current-temp">
-            {Math.round(weather.current.temp_c)}°
-          </span>
-          <div className="weather-widget__range">
-            <span className="high">
-              {Math.round(weather.forecast.forecastday[0].day.maxtemp_c)}°
-            </span>{' '}
-            /{' '}
-            <span className="low">
-              {Math.round(weather.forecast.forecastday[0].day.mintemp_c)}°
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <nav className="weather-widget__nav">
-        <a href="#" className="active">
-          Hourly
-        </a>
-      </nav>
-
-      <div className="weather-widget__hourly">
-        {weather.forecast.forecastday.length !== 0 &&
-          weatherHour !== undefined &&
-          weatherHour.map((el) => (
-            <Fragment key={el.time_epoch}>
-              <div className="forecast-item ">
-                <span className="forecast-item__time">
-                  {weatherHour[0] === el ? 'NOW' : el.time.split(' ')[1]}
-                </span>
-                <img
-                  src={el.condition.icon}
-                  alt={el.condition.text}
-                  className="forecast-item__icon"
-                />
-                <p className="forecast-item__temp">{`${Math.round(el.temp_c)}°`}</p>
-              </div>
-            </Fragment>
-          ))}
-      </div>
-    </section>
-  );
+  if (viewType === 'current')
+    return <CurrentWeather weather={weather as IWeather} weatherHour={weatherHour} />;
+  if (viewType === 'future')
+    return <FutureWeather weather={weather as IFutureWeather} weatherHour={weatherHour} />;
 };
 
 export default Weather;

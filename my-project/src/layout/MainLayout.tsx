@@ -16,8 +16,19 @@ const MainLayout = () => {
     const ComSonEnd = `${dayjs().add(10, 'day').format('YYYY-MM-DD')}T00:00:00Z`;
 
     dispatch(FetchEvents({ start: ComSonStart, end: ComSonEnd, page: 0 }));
-    dispatch(Fetch({classificationName: 'Music',}));
+    dispatch(Fetch({ classificationName: 'Music' }));
   }, []);
+
+  useEffect(() => {
+    const scrollableElement = document.querySelector('.container');
+    if (scrollableElement) {
+      scrollableElement.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'instant',
+      });
+    }
+  }, [pathname]);
 
   return (
     <>

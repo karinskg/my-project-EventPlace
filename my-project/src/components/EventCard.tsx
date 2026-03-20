@@ -9,6 +9,8 @@ import { useSelector } from 'react-redux';
 const EventCard = ({ el }: { el: Event }) => {
   const navigation = useNavigate();
   const { favouriteEv } = useSelector((state: RootState) => state.eventsApi);
+
+  
   const dispatch = useAppDispatch();
   const date = dayjs(el.dates.start.localDate).format('DD MMMM').split(' ');
   const generateStableNum = (id: string) => {
@@ -18,7 +20,7 @@ const EventCard = ({ el }: { el: Event }) => {
 
   return (
     <>
-      <div className="event-card" onClick={() => navigation('/cart-detail')}>
+      <div className="event-card" onClick={() => navigation(`/cart-detail/${el.id}`)}>
         <div className="event-card__image-wrapper">
           <img
             src={el.images?.[0]?.url || 'image/vladimir-anikeev-IM8ZyYaSW6g-unsplash.jpg'}
