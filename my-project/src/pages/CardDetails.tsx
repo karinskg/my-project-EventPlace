@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch, type RootState } from '../redux/store';
-import type { ICartDetail } from '../types';
+
 import dayjs from 'dayjs';
 import { FetchWeather } from '../redux/feature/weatherSlice';
 import {
@@ -14,6 +14,7 @@ import Weather from '../components/Weather';
 import { formateDate, formateTime, getDaysDifference } from '../utils';
 import Toast from '../components/Toast';
 import { addEvent, removeEvent } from '../redux/feature/calendarSlice';
+import type { ICartDetail } from '../typescript/cartDetailsTS';
 
 const CardDetails = () => {
   const cartDetail = useSelector((state: RootState) => state.eventsApi.cartDetail);
@@ -29,10 +30,10 @@ const CardDetails = () => {
 
   const event = (cartDetail || null) as ICartDetail;
 
-  const date = dayjs(event.dates?.start?.localDate).format('DD MMMM, YYYY') || '10 March 2026';
-  const day = dayjs(event.dates?.start?.localDate).format('dddd') || 'monday';
-  const time = event.dates?.start?.localTime?.slice(0, 5) || '19.00';
-  const state = event._embedded?.venues?.[0].state?.name || '';
+  const date = dayjs(event.date).format('DD MMMM, YYYY') || '10 March 2026';
+  const day = dayjs(event.date).format('dddd') || 'monday';
+  const time = event.time?.slice(0,5) ||  '19.00';
+  const { state } = event || '';
 
   const [trigger, { isLoading, error }] = useLazyGetCartDetailIdQuery();
   const dispatch = useAppDispatch();
@@ -48,9 +49,8 @@ const CardDetails = () => {
   }, []);
 
   useEffect(() => {
-    if (event && event._embedded?.venues?.[0].city?.name) {
-      const city = event._embedded?.venues?.[0].city?.name;
-      const date = event.dates?.start?.localDate;
+    if (event && event.city) {
+      const { city, date } = event;
 
       const daysAway = getDaysDifference(date);
 
@@ -89,9 +89,9 @@ const CardDetails = () => {
       const images = event.images?.find((el) => el.height <= 115) || event.images?.[0];
       const array = {
         id: event.id,
-        date: formateDate(event?.dates?.start?.localDate),
+        date: formateDate(event?.date),
         title: event.name,
-        time: formateTime(event?.dates?.start?.localTime),
+        time: formateTime(event?.time),
         img: images.url,
         other: '',
       };
@@ -115,8 +115,8 @@ const CardDetails = () => {
             <h1 className="trip-name">{event.name}</h1>
             <div className="info-pills">
               <div className="info-pill">
-                <img src={event.seatmap?.staticUrl || '/vite.svg'} alt="location" />
-                <span>{`${event._embedded?.venues?.[0].country?.name}, ${state}${state && ','} ${event._embedded?.venues?.[0].city?.name}`}</span>
+                <img src={event.seatmap || '/vite.svg'} alt="location" />
+                <span>{`${event.country}, ${state}${state && ','} ${event.city}`}</span>
               </div>
             </div>
           </header>
@@ -133,12 +133,8 @@ const CardDetails = () => {
 
           <section className="meta-row">
             <div className="chip-list">
-              <span className="chip bg-blue">
-                {event.classifications?.[0].segment?.name || 'sport'}
-              </span>
-              <span className="chip bg-green">
-                {event.classifications?.[0].genre?.name || 'sport'}
-              </span>
+              <span className="chip bg-blue">{event.segment || 'sport'}</span>
+              <span className="chip bg-green">{event.genre || 'sport'}</span>
             </div>
           </section>
 

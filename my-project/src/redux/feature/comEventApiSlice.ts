@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { Event, ICartDetail } from '../../types';
+import type { Event } from '../../types';
+import type { ICartDetail } from '../../typescript/cartDetailsTS';
 
 interface FetchEventsArgs {
   start: string;
@@ -225,7 +226,22 @@ export const comEventApiSlice = createSlice({
         console.log('error');
       })
       .addMatcher(cartDetailApi.endpoints.getCartDetailId.matchFulfilled, (state, { payload }) => {
-        state.cartDetail = payload;
+        const transform = {
+          id: payload.id,
+          date: payload.dates?.start?.localDate,
+          time: payload.dates?.start?.localTime,
+          state: payload._embedded?.venues?.[0].state?.name,
+          city: payload._embedded?.venues?.[0].city?.name,
+          images: payload.images,
+          seatmap: payload.seatmap?.staticUrl,
+          segment: payload.classifications?.[0].segment?.name,
+          genre: payload.classifications?.[0].genre?.name,
+          info: payload.info,
+          name: payload.name,
+          country:payload._embedded?.venues?.[0].country?.name
+        };
+
+        state.cartDetail = transform;
       });
   },
 });

@@ -1,44 +1,43 @@
 import { Fragment } from 'react';
-import type { IWeather, WeatherHours } from '../../types';
+
 import { formateDate } from '../../utils';
+import type { IWeather, WeatherHours } from '../../typescript/weatherTS';
 
 interface futureW {
   weather: IWeather;
   weatherHour: WeatherHours[] | undefined;
 }
 
-//weatherHour[0] === el ? 'NOW' : 
+
 const CurrentWeather = ({ weather, weatherHour }: futureW) => {
-  
+ console.log(weather)
   return (
     <section className="weather-widget">
       <div className="weather-widget__main">
         <div className="weather-widget__info">
-          <h2 className="weather-widget__city">{weather.location.name}</h2>
+          <h2 className="weather-widget__city">{weather.name}</h2>
           <p className="weather-widget__date">{formateDate(weatherHour?.[0]?.time)}</p>
           <div className="weather-widget__condition">
             <img
-              src={
-                weather.current?.condition?.icon
-              }
-              alt={weather.current?.condition?.text}
+              src={weather?.icon}
+              alt={weather?.text}
               className="weather-widget__icon"
             />
-            <span className="weather-widget__status">{weather.current.condition.text}</span>
+            <span className="weather-widget__status">{weather?.text}</span>
           </div>
         </div>
 
         <div className="weather-widget__temp-block">
           <span className="weather-widget__current-temp">
-            {Math.round(weather.current.temp_c)}°
+            {Math.round(weather?.avgtemp_c)}°
           </span>
           <div className="weather-widget__range">
             <span className="high">
-              {Math.round(weather.forecast.forecastday[0].day.maxtemp_c)}°
+              {Math.round(weather?.maxtemp_c)}°
             </span>{' '}
             /{' '}
             <span className="low">
-              {Math.round(weather.forecast.forecastday[0].day.mintemp_c)}°
+              {Math.round(weather?.mintemp_c)}°
             </span>
           </div>
         </div>
@@ -51,14 +50,12 @@ const CurrentWeather = ({ weather, weatherHour }: futureW) => {
       </nav>
 
       <div className="weather-widget__hourly">
-        {weather.forecast.forecastday.length !== 0 &&
+        {weather?.forecastday.length !== 0 &&
           weatherHour !== undefined &&
           weatherHour.map((el) => (
             <Fragment key={el.time_epoch}>
               <div className="forecast-item ">
-                <span className="forecast-item__time">
-                  {el.time.split(' ')[1]}
-                </span>
+                <span className="forecast-item__time">{el.time.split(' ')[1]}</span>
                 <img
                   src={el.condition.icon}
                   alt={el.condition.text}

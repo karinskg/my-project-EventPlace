@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-
-import type { IFutureWeather, IWeather, WeatherHours } from '../../types';
 import dayjs from 'dayjs';
+import type { IWeather, WeatherHours } from '../../typescript/weatherTS';
 
 interface Idates {
   city: string;
@@ -34,7 +33,7 @@ export const FetchWeather = createAsyncThunk(
 
 export interface WeatherState {
   weatherHour: WeatherHours[] | undefined;
-  weather: IWeather | IFutureWeather | null;
+  weather: IWeather | null;
   isLoading: boolean;
   viewType: 'current' | 'future' | 'loading' | 'error';
 }
@@ -55,16 +54,34 @@ export const weatherSlice = createSlice({
       .addCase(FetchWeather.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(FetchWeather.fulfilled, (state, actions) => {
-        state.viewType = 'current' in actions.payload ? 'current' : 'future';
-        state.weather = actions.payload;
+      .addCase(FetchWeather.fulfilled, (state, { payload }) => {
+        state.viewType = 'current' in payload ? 'current' : 'future';
+        const length = payload.forecast.forecastday.length - 1;
+        const transform = {
+          name: payload.location.name,
+          icon:
+            payload.current?.condition?.icon ||
+            payload.forecast?.forecastday[length]?.day?.condition?.icon,
+          text:
+            payload.current?.condition?.text ||
+            payload.forecast?.forecastday[length]?.day?.condition?.text,
+          temp_c: payload.current?.temp_c,
+          avgtemp_c: payload.forecast?.forecastday[length].day.avgtemp_c,
+          maxtemp_c: payload.forecast?.forecastday[length].day.maxtemp_c,
+          mintemp_c: payload.forecast?.forecastday[length].day.mintemp_c,
+          forecastday: payload.forecast?.forecastday,
+          date: payload.forecast?.forecastday?.[length]?.date,
+        };
+        console.log(transform);
 
-        const lengthArr = state.weather?.forecast.forecastday.length || 0;
+        state.weather = transform;
 
-        state.weatherHour = state.weather?.forecast.forecastday[lengthArr - 1].hour;
+        const lengthArr = state.weather?.forecastday.length || 0;
+
+        state.weatherHour = state.weather?.forecastday[lengthArr - 1].hour;
 
         const currentDateApi = dayjs(
-          state.weather?.forecast.forecastday[lengthArr - 1].date.split(' ')[0],
+          state.weather?.forecastday[lengthArr - 1].date.split(' ')[0],
         ).isSame(dayjs(), 'day');
 
         if (currentDateApi) {
