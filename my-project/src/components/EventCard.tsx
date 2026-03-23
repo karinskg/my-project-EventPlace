@@ -1,21 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 
 import dayjs from 'dayjs';
-import type { Event } from '../types';
+import type { NewEvent } from '../types';
 import { useAppDispatch, type RootState } from '../redux/store';
 import { addFavourite, removeFavourite } from '../redux/feature/comEventApiSlice';
 import { useSelector } from 'react-redux';
 
-const EventCard = ({ el }: { el: Event }) => {
+const EventCard = ({ el }: { el: NewEvent }) => {
   const navigation = useNavigate();
   const { favouriteEv } = useSelector((state: RootState) => state.eventsApi);
 
   const dispatch = useAppDispatch();
-  const date = dayjs(el.dates.start.localDate).format('DD MMMM').split(' ');
+  const date = dayjs(el.date).format('DD MMMM').split(' ');
   const generateStableNum = (id: string) => {
-    const charSum = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const charSum = id?.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return (charSum % 20) + 1;
   };
+ 
   const mainImage = el.images?.find((el) => el.height >= 500) || el.images?.[0];
   return (
     <>
@@ -50,7 +51,7 @@ const EventCard = ({ el }: { el: Event }) => {
 
         <div className="event-card__content">
           <h3 className="event-card__title">
-            {el.name.length > 40 ? el.name.slice(0, 40) + '...' : el.name}
+            {el.name?.length > 40 ? el.name.slice(0, 40) + '...' : el.name}
           </h3>
 
           <div className="event-card__info">
@@ -59,15 +60,11 @@ const EventCard = ({ el }: { el: Event }) => {
             </div>
 
             <div className="event-card__location">
-              <span className="icon">📍</span> {el._embedded?.venues?.[0]?.city?.name || 'TBA'}
+              <span className="icon">📍</span> {el.city || 'TBA'}
             </div>
           </div>
 
-          <div className="event-card__price">
-            {el._embedded?.venues[0]?.upcomingEvents?._total
-              ? `$${el._embedded.venues[0].upcomingEvents._total}`
-              : 'Price TBA'}
-          </div>
+          <div className="event-card__price">{el.total ? `$${el.total}` : 'Price TBA'}</div>
         </div>
       </div>
     </>

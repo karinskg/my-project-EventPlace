@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { Event } from '../../types';
+import type { Event, NewEvent } from '../../types';
 import type { ICartDetail } from '../../typescript/cartDetailsTS';
 
 interface FetchEventsArgs {
@@ -93,7 +93,7 @@ export const cartDetailApi = createApi({
   }),
 });
 export interface WeatherState {
-  comingEvents: Event[];
+  comingEvents: NewEvent[];
   allEvents: Event[];
   favouriteEv: Record<string, Omit<Event, 'id'>>;
   cartDetail: Partial<ICartDetail> | null;
@@ -107,7 +107,7 @@ export interface WeatherState {
   errorAllEv: string;
 
   inputValRed: string;
-  filtersComingEvent: Event[];
+  filtersComingEvent: NewEvent[];
   isClickBut: Record<string, boolean>;
 }
 
@@ -185,11 +185,19 @@ export const comEventApiSlice = createSlice({
 
         const existingIds = new Set(state.comingEvents.map((event) => event.id));
 
-        newEvents.forEach((newEvent: Event) => {
-          if (!existingIds.has(newEvent.id)) {
-            state.comingEvents.push(newEvent);
-          }
-        });
+        const filteredAndTransformed = newEvents
+          .filter((newEvent:Event) => !existingIds.has(newEvent.id)) 
+          .map((newEvent:Event) => ({
+            id: newEvent.id,
+            name: newEvent.name,
+            date: newEvent.dates.start.localDate,
+            images: newEvent.images,
+            city: newEvent._embedded?.venues?.[0]?.city?.name,
+            total: newEvent._embedded?.venues?.[0]?.upcomingEvents?._total,
+          }));
+
+        state.comingEvents.push(...filteredAndTransformed);
+       
 
         state.pageCom += 1;
       })
@@ -238,7 +246,7 @@ export const comEventApiSlice = createSlice({
           genre: payload.classifications?.[0].genre?.name,
           info: payload.info,
           name: payload.name,
-          country:payload._embedded?.venues?.[0].country?.name
+          country: payload._embedded?.venues?.[0].country?.name,
         };
 
         state.cartDetail = transform;

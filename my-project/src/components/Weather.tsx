@@ -22,7 +22,7 @@ const Weather = () => {
       </section>
     );
 
-    if(!weather)return <p>Нет данных</p>
+  if (!weather) return <p>Нет данных</p>;
 
   return (
     <section className="weather-widget">

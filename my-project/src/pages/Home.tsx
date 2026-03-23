@@ -5,6 +5,7 @@ import CartLoader from '../components/CartLoader';
 import { useAppDispatch, type RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
 import { Fetch } from '../redux/feature/comEventApiSlice';
+import dayjs from 'dayjs';
 
 const options = [
   { label: 'name(asc)', value: 'name,asc' },
@@ -17,7 +18,7 @@ const Home = () => {
   const [activeBut, setActiveBut] = useState('Music');
   const category = ['Music', 'Sport', 'All'];
   const [inputKeyword, setInputKeyword] = useState('');
-  const [startDate, setStartDate] = useState('');
+  const [startDate, setStartDate] = useState(()=> dayjs().format('YYYY-MM-DD'));
   const [endtDate, setEndtDate] = useState('');
   const [filterVal, setFilterVal] = useState<string>();
   const [isEng, setIsEng] = useState(true);

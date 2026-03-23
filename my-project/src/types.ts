@@ -9,30 +9,18 @@ export interface eventArray {
 
 /////commingEvents///////////
 
-export interface IEvents {
-  _embedded: Embedded2;
-  // _links: Links3;
-  // page: Page;
+export interface NewEvent {
+  date: string;
+  city: string;
+  total: string;
+  name: string;
+  type: string;
+  id: string;
+  test: boolean;
+  url: string;
+  locale: string;
+  images: Image[];
 }
-
-interface Page {
-  size: number;
-  totalElements: number;
-  totalPages: number;
-  number: number;
-}
-
-interface Links3 {
-  first: Self;
-  self: Self;
-  next: Self;
-  last: Self;
-}
-
-interface Embedded2 {
-  events: Event[];
-}
-
 export interface Event {
   name: string;
   type: string;
